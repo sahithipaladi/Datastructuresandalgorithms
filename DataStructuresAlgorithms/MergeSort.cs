@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace DataStructuresAlgorithms
+namespace AlgorithmPrograms
 {
     class MergeSort
     {
@@ -11,32 +13,53 @@ namespace DataStructuresAlgorithms
             Console.WriteLine("Enter size of the array : ");
             int size = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Enter elements of an array : ");
-            int[] arr = new int[size];
+            string[] arr = new string[size];
             for (int i = 0; i < size; i++)
             {
-                arr[i] = Convert.ToInt32(Console.ReadLine());
+                arr[i] = Console.ReadLine();
             }
-            Bubble(arr, size);
-        }
-        private static void Bubble(int[] arr, int length)
-        {
-            for (int i = 0; i < length - 1; i++)
+            SortMethod(arr,0,size-1);
+            Console.WriteLine("The elements after performing Merge sort : ");
+            for(int i=0;i<size;i++)
             {
-                for (int j = 0; j < length - i - 1; j++)
-                {
-                    if (arr[j] > arr[j + 1])
-                    {
-                        int temp = arr[j];
-                        arr[j] = arr[j + 1];
-                        arr[j + 1] = temp;
-                    }
-                }
+                Console.Write(arr[i]+" ");
             }
-            Console.WriteLine("The elements in an array after Bubble sort : ");
-            for (int i = 0; i < length; i++)
-                Console.WriteLine(arr[i] + " ");
+        }
+        private static void SortMethod(string[] arr,int left,int right)
+        {
+            int mid;
+            if (right > left)
+            {
+                mid = (right + left) / 2;
+                SortMethod(arr, left, mid);
+                SortMethod(arr, (mid + 1), right);
+                MergeMethod(arr, left, (mid + 1), right);
+            }
+        }
+        private static void MergeMethod(string[] arr,int left,int mid,int right)
+        {
+            string[] temp = new string[25];
+            int i, left_end, num_elements, tmp_pos;
+            left_end = (mid - 1);
+            tmp_pos = left;
+            num_elements = (right - left + 1);
+            while ((left <= left_end) && (mid <= right))
+            {
+                if ((arr[left].CompareTo(arr[mid]))<0)
+                    temp[tmp_pos++] = arr[left++];
+                else
+                    temp[tmp_pos++] = arr[mid++];
+            }
+            while (left <= left_end)
+                temp[tmp_pos++] = arr[left++];
+            while (mid <= right)
+                temp[tmp_pos++] = arr[mid++];
+            for (i = 0; i < num_elements; i++)
+            {
+                arr[right] = temp[right];
+                right--;
+            }
         }
     }
 }
-    
 
